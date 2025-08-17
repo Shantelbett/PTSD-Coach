@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PTSD Support App - Profile</title>
+    <link rel="stylesheet" href="root.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9FAFC;
+            padding: 1rem;
+            color: var(--dark);
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding-bottom: 5rem;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .settings-button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .profile-avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-username {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .profile-bio {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .edit-profile-button {
+            background-color: var(--light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 0.7rem;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-profile-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-title {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .progress-percent {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            width: 75%;
+            /* This would be dynamic in a real app */
+        }
+
+        .progress-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric-card {
+            background-color: var(--light-gray);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            background-color: #FFEEEE;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid #FFCCCC;
+        }
+
+        .emergency-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #D32F2F;
+        }
+
+        .emergency-header i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .emergency-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .emergency-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-option {
+            background-color: white;
+            border: 1px solid #FFCCCC;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .emergency-option:hover {
+            background-color: #FFF5F5;
+        }
+
+        .emergency-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #FFEBEE;
+            color: #D32F2F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .emergency-details {
+            flex-grow: 1;
+        }
+
+        .emergency-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .emergency-desc {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .emergency-button {
+            background-color: #D32F2F;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .emergency-button:hover {
+            background-color: #B71C1C;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .resource-details {
+            flex-grow: 1;
+        }
+
+        .resource-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .resource-desc {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--light);
+            border-top: 1px solid #E5E9F0;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 420px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.7rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+           .nav-item-center {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 12px rgba(90, 143, 212, 0.3);
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .nav-item-center i {
+            font-size: 1.4rem;
+        }
+
+        /* Emergency Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 380px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background-color: #D32F2F;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-text {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .modal-button {
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .modal-button-primary {
+            background-color: #D32F2F;
+            color: white;
+            border: none;
+        }
+
+        .modal-button-primary:hover {
+            background-color: #B71C1C;
+        }
+
+        .modal-button-secondary {
+            background-color: white;
+            color: #D32F2F;
+            border: 1px solid #D32F2F;
+        }
+
+        .modal-button-secondary:hover {
+            background-color: #FFEBEE;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-status">
+
+        </div>
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">Profile</h1>
+            <button class="settings-button">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-avatar">
+                JP
+                <div class="profile-avatar-edit">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+            </div>
+            <h2 class="profile-name">James Peterson</h2>
+            <div class="profile-username">@healingjourney</div>
+            <p class="profile-bio">
+                PTSD survivor | Mental health advocate | Sharing my healing journey one day at a time
+            </p>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number">142</div>
+                    <div class="stat-label">Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">87</div>
+                    <div class="stat-label">Entries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Goals</div>
+                </div>
+            </div>
+            <button class="edit-profile-button">
+                Edit Profile
+            </button>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="section-title">
+                <span>My Progress</span>
+                <i class="fas fa-chart-line"></i>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <div class="progress-title">Mental Wellbeing</div>
+                    <div class="progress-percent">75%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <div class="progress-title">Symptom Management</div>
+                    <div class="progress-percent">62%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 62%"></div>
+                </div>
+            </div>
+
+            <div class="progress-metrics">
+                <div class="metric-card">
+                    <div class="metric-value">28</div>
+                    <div class="metric-label">Good Days</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5.2</div>
+                    <div class="metric-label">Avg Mood</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">12</div>
+                    <div class="metric-label">Exercises</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">92%</div>
+                    <div class="metric-label">Goals Met</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Section -->
+        <div class="emergency-section">
+            <div class="emergency-header">
+                <i class="fas fa-life-ring"></i>
+                <div class="emergency-title">Emergency Support</div>
+            </div>
+            <p class="emergency-text">
+                If you're in crisis or experiencing severe distress, connect immediately with a trained professional who
+                can help.
+            </p>
+
+            <div class="emergency-options">
+                <div class="emergency-option" onclick="openEmergencyModal('panic')">
+                    <div class="emergency-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="emergency-details">
+                        <div class="emergency-name">Panic Attack</div>
+                        <div class="emergency-desc">Immediate support for acute anxiety</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <div class="emergency-option" onclick="openEmergencyModal('suicidal')">
+                    <div class="emergency-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="emergency-details">
+                        <div class="emergency-name">Suicidal Thoughts</div>
+                        <div class="emergency-desc">24/7 crisis support</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <div class="emergency-option" onclick="openEmergencyModal('flashback')">
+                    <div class="emergency-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="emergency-details">
+                        <div class="emergency-name">Flashback</div>
+                        <div class="emergency-desc">Grounding techniques & support</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <button class="emergency-button" onclick="openEmergencyModal('general')">
+                <i class="fas fa-phone-alt"></i>
+                Connect Now
+            </button>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="resources-section">
+            <div class="section-title">
+                <span>Resources</span>
+                <i class="fas fa-book-open"></i>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="resource-details">
+                    <div class="resource-name">Therapy Notes</div>
+                    <div class="resource-desc">Your recent therapy session summaries</div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">
+                    <i class="fas fa-book-medical"></i>
+                </div>
+                <div class="resource-details">
+                    <div class="resource-name">Coping Strategies</div>
+                    <div class="resource-desc">Your personalized coping techniques</div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="resource-details">
+                    <div class="resource-name">Support Network</div>
+                    <div class="resource-desc">Your trusted contacts</div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="journals.html" class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>Journal</span>
+        </a>
+        <a href="social-feed.html" class="nav-item-center">
+            <i class="fas fa-play"></i>
+        </a>
+        <a href="communities.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>Community</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Emergency Modal -->
+    <div class="modal" id="emergencyModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEmergencyModal()">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title" id="emergencyModalTitle">Emergency Support</h3>
+                <div class="modal-subtitle" id="emergencyModalSubtitle">Connecting you with help</div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text" id="emergencyModalText">
+                    We're connecting you with a trained crisis counselor who can help you through this difficult moment.
+                </p>
+                <div class="modal-buttons">
+                    <button class="modal-button modal-button-primary" onclick="connectToCounselor()">
+                        <i class="fas fa-phone-alt"></i> Connect Now
+                    </button>
+                    <button class="modal-button modal-button-secondary" onclick="closeEmergencyModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Emergency Support Functions
+        function openEmergencyModal(type) {
+            const modal = document.getElementById('emergencyModal');
+            const title = document.getElementById('emergencyModalTitle');
+            const subtitle = document.getElementById('emergencyModalSubtitle');
+            const text = document.getElementById('emergencyModalText');
+
+            switch (type) {
+                case 'panic':
+                    title.textContent = 'Panic Attack Support';
+                    subtitle.textContent = 'Immediate help for acute anxiety';
+                    text.textContent = 'We\'ll connect you with a counselor trained in helping with panic attacks. They can guide you through breathing exercises and grounding techniques.';
+                    break;
+                case 'suicidal':
+                    title.textContent = 'Suicidal Thoughts Support';
+                    subtitle.textContent = '24/7 crisis support';
+                    text.textContent = 'You\'re not alone. We\'re connecting you with a trained suicide prevention counselor who can help you through this difficult moment.';
+                    break;
+                case 'flashback':
+                    title.textContent = 'Flashback Support';
+                    subtitle.textContent = 'Grounding techniques & assistance';
+                    text.textContent = 'We\'ll connect you with someone who can help you through this flashback and guide you back to the present moment.';
+                    break;
+                default:
+                    title.textContent = 'Emergency Support';
+                    subtitle.textContent = 'Connecting you with help';
+                    text.textContent = 'We\'re connecting you with a trained crisis counselor who can help you through this difficult moment.';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeEmergencyModal() {
+            document.getElementById('emergencyModal').style.display = 'none';
+        }
+
+        function connectToCounselor() {
+            alert('In a real app, this would connect you to a crisis counselor.\nFor now, please call your local emergency number if you need immediate help.');
+            closeEmergencyModal();
+        }
+
+        // Load header and footer
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.header-status').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+</body>
+
+</html>

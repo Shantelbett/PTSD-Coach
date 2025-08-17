@@ -1,0 +1,10 @@
+        :root {
+            --primary: #5A8FD4;
+            --primary-light: #E8F0FA;
+            --secondary: #FF7E5D;
+            --dark: #2D2D2D;
+            --light: #FFFFFF;
+            --gray: #7D7D7D;
+            --light-gray: #F4F7FA;
+            --success: #4CAF50;
+        }

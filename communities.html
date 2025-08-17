@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PTSD Support App - Communities</title>
+    <link rel="stylesheet" href="root.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9FAFC;
+            padding: 1rem;
+            color: var(--dark);
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding-bottom: 5rem;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border: 1px solid #E5E9F0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background-color: var(--light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .category-tag {
+            background-color: var(--light);
+            border: 1px solid #E5E9F0;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-tag:hover, .category-tag.active {
+            background-color: var(--primary);
+            color: var(--light);
+            border-color: var(--primary);
+        }
+
+        /* Community Cards */
+        .community-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .community-card {
+            background-color: var(--light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .community-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .community-content {
+            padding: 1.25rem;
+        }
+
+        .community-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .community-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .community-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .community-members {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .join-button {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .join-button:hover {
+            background-color: #4A7FC4;
+        }
+
+        .join-button.joined {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--light);
+            border-top: 1px solid #E5E9F0;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 420px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.7rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item-center {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 12px rgba(90, 143, 212, 0.3);
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .nav-item-center i {
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-status">
+
+        </div>
+        <!-- Header -->
+        <div class="page-header">
+            <button class="back-button" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="page-title">Communities</h1>
+            <div style="width: 24px;"></div> <!-- Spacer for alignment -->
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search communities...">
+        </div>
+
+        <!-- Categories -->
+        <div class="categories">
+            <div class="category-tag active">All</div>
+            <div class="category-tag">Faith-Based</div>
+            <div class="category-tag">Outdoors</div>
+            <div class="category-tag">Creative</div>
+            <div class="category-tag">Victims</div>
+            <div class="category-tag">Survivors</div>
+            <div class="category-tag">Mindfulness</div>
+        </div>
+
+        <!-- Community Cards -->
+        <div class="community-cards">
+            <!-- Christian Community -->
+            <div class="community-card">
+                <img src="https://i.ytimg.com/vi/NcU1CrG8biM/maxresdefault.jpg" alt="Christian Community" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Faith & Healing</h3>
+                    <p class="community-description">
+                        A supportive community for those seeking healing through faith. Join us for prayer, scripture study, and fellowship with others who understand the journey of trauma recovery.
+                    </p>
+                    <div class="community-meta">
+                        <div class="community-members">
+                            <i class="fas fa-users"></i>
+                            <span>1.2k members</span>
+                        </div>
+                        <button class="join-button">Join</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hiking Community -->
+            <div class="community-card">
+                <img src="https://th.bing.com/th/id/R.201b19b03f9df5383608e87e601c69b7?rik=Fzlx0eDpJs0zzA&pid=ImgRaw&r=0" alt="Hiking Community" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Healing Through Hiking</h3>
+                    <p class="community-description">
+                        Nature heals. Connect with others who find peace on the trails. We organize group hikes of varying difficulty levels and share tips for mindful outdoor experiences.
+                    </p>
+                    <div class="community-meta">
+                        <div class="community-members">
+                            <i class="fas fa-users"></i>
+                            <span>856 members</span>
+                        </div>
+                        <button class="join-button">Join</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Art Community -->
+            <div class="community-card">
+                <img src="https://cdn.pixabay.com/photo/2023/11/14/23/06/art-8388863_960_720.jpg" alt="Art Community" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Expressive Arts Collective</h3>
+                    <p class="community-description">
+                        Channel your experiences into creative expression. This community welcomes all art forms - painting, writing, music, and more. No experience needed, just a willingness to explore.
+                    </p>
+                    <div class="community-meta">
+                        <div class="community-members">
+                            <i class="fas fa-users"></i>
+                            <span>723 members</span>
+                        </div>
+                        <button class="join-button joined">
+                            <i class="fas fa-check"></i> Joined
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Veterans Community -->
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Veterans Community" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Victims Support Network</h3>
+                    <p class="community-description">
+                        A safe space for veterans to share experiences, resources, and support. We understand the unique challenges of military trauma and recovery.
+                    </p>
+                    <div class="community-meta">
+                        <div class="community-members">
+                            <i class="fas fa-users"></i>
+                            <span>2.4k members</span>
+                        </div>
+                        <button class="join-button">Join</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yoga Community -->
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Yoga Community" class="community-image">
+                <div class="community-content">
+                    <h3 class="community-title">Mindful Movement</h3>
+                    <p class="community-description">
+                        Gentle yoga and movement for trauma recovery. Our community focuses on rebuilding the mind-body connection through accessible practices.
+                    </p>
+                    <div class="community-meta">
+                        <div class="community-members">
+                            <i class="fas fa-users"></i>
+                            <span>589 members</span>
+                        </div>
+                        <button class="join-button">Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="journals.html" class="nav-item">
+            <i class="fas fa-book"></i>
+            <span>Journal</span>
+        </a>
+        <a href="social-feed.html" class="nav-item-center">
+            <i class="fas fa-play"></i>
+        </a>
+        <a href="communities.html" class="nav-item active">
+            <i class="fas fa-comments"></i>
+            <span>Community</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // Toggle join button state
+        document.querySelectorAll('.join-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.classList.contains('joined')) {
+                    this.classList.remove('joined');
+                    this.innerHTML = 'Join';
+                } else {
+                    this.classList.add('joined');
+                    this.innerHTML = '<i class="fas fa-check"></i> Joined';
+                }
+            });
+        });
+
+        // Filter by category
+        document.querySelectorAll('.category-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                document.querySelector('.category-tag.active').classList.remove('active');
+                this.classList.add('active');
+                // In a real app, you would filter communities here
+            });
+        });
+
+        // Load header and footer
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+            
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.header-status').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+</body>
+
+</html>

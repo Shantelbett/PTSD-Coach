@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Bottom Navigation */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--light);
+        border-top: 1px solid #E5E9F0;
+        padding: 0.5rem 1rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        max-width: 420px;
+        margin: 0 auto;
+        z-index: 100;
+    }
+
+    .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--gray);
+        font-size: 0.7rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 10px;
+        transition: all 0.2s;
+    }
+
+    .nav-item i {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .nav-item.active {
+        color: var(--primary);
+        background-color: var(--primary-light);
+    }
+
+    .nav-item:hover {
+        color: var(--primary);
+    }
+
+    .nav-item-center {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 12px rgba(90, 143, 212, 0.3);
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+    .nav-item-center i {
+        font-size: 1.4rem;
+    }
+</style>
+
+<body>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="journals.html" class="nav-item">
+            <i class="fas fa-book"></i>
+            <span>Journals</span>
+        </a>
+        <a href="social-feed.html" class="nav-item-center">
+            <i class="fas fa-play"></i>
+        </a>
+        <a href="communities.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+</body>
+
+</html>

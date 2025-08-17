@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PTSD Support App - Mobile UI</title>
+    <link rel="stylesheet" href="root.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9FAFC;
+            padding: 1rem;
+            color: var(--dark);
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding-bottom: 5rem;
+        }
+
+        
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #7BAFE4 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(90, 143, 212, 0.3);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .greeting {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .date {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .mood-tracker {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mood-title {
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .mood-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mood-option:hover {
+            transform: scale(1.1);
+        }
+
+        .mood-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .mood-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        /* Journal Card */
+        .journal-card {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-header i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .journal-card textarea {
+            width: 100%;
+            border: 1px solid #E5E9F0;
+            background-color: var(--light-gray);
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            resize: none;
+            min-height: 120px;
+            margin-bottom: 0.5rem;
+        }
+
+        .journal-card textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .primary-button {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 0.9rem;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .primary-button:hover {
+            background-color: #4A7FC4;
+        }
+
+        .secondary-button {
+            background-color: var(--light-gray);
+            color: var(--primary);
+            padding: 0.9rem;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1rem;
+        }
+
+        .secondary-button:hover {
+            background-color: #E0E8F2;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-card {
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-desc {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* Community Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .see-all {
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .community-post {
+            background-color: var(--light);
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .community-post:hover {
+            transform: translateY(-2px);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .post-author {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.1rem;
+        }
+
+        .post-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .reaction-bar {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .reaction {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: pointer;
+        }
+
+        .reaction.active {
+            color: var(--primary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--light);
+            border-top: 1px solid #E5E9F0;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 420px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.7rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item-center {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 12px rgba(90, 143, 212, 0.3);
+        }
+
+        .nav-item-center i {
+            font-size: 1.4rem;
+        }
+
+        /* Breathing Exercise Modal (hidden by default) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .breathing-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            margin: 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .breathing-instruction {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Simulated Status Bar -->
+        
+        <div class="header-status">
+
+        </div>
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <div class="greeting">
+                    <span>Hello James</span>
+                    <span>👋</span>
+                </div>
+                <div class="date">Monday, July 28</div>
+
+                <div class="mood-tracker">
+                    <div class="mood-title">
+                        <span>How are you feeling today?</span>
+                        <span><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="mood-options">
+                        <div class="mood-option">
+                            <div class="mood-icon">😢</div>
+                            <div class="mood-label">Struggling</div>
+                        </div>
+                        <div class="mood-option">
+                            <div class="mood-icon">😐</div>
+                            <div class="mood-label">Okay</div>
+                        </div>
+                        <div class="mood-option">
+                            <div class="mood-icon">🙂</div>
+                            <div class="mood-label">Good</div>
+                        </div>
+                        <div class="mood-option">
+                            <div class="mood-icon">😊</div>
+                            <div class="mood-label">Great</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal Card -->
+        <div class="journal-card">
+            <div class="card-header">
+                <i class="fas fa-book-open"></i>
+                <div class="card-title">Daily Journal</div>
+            </div>
+            <textarea rows="5"
+                placeholder="Write about your thoughts, feelings, or anything on your mind..."></textarea>
+            <button class="primary-button">
+                <i class="fas fa-save"></i>
+                Save Entry
+            </button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-card" onclick="openModal()">
+                <div class="action-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="action-title">Breathing Exercise</div>
+                <div class="action-desc">Calm your mind</div>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <div class="action-title">Guided Meditation</div>
+                <div class="action-desc">Find your center</div>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <div class="action-title">Support Groups</div>
+                <div class="action-desc">Connect with others</div>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="action-title">Resources</div>
+                <div class="action-desc">Learn and grow</div>
+            </div>
+        </div>
+
+        <!-- Community Section -->
+        <div class="section-header">
+            <div class="section-title">Community Support</div>
+            <div class="see-all">See all</div>
+        </div>
+
+        <div class="community-post">
+            <div class="post-header">
+                <div class="post-avatar">AS</div>
+                <div>
+                    <div class="post-author">Anonymous Survivor</div>
+                    <div class="post-time">2 hours ago</div>
+                </div>
+            </div>
+            <div class="post-text">
+                Today I finally went outside without panic. It was scary, but I'm proud of myself for taking this small
+                step forward in my healing journey.
+            </div>
+            <div class="reaction-bar">
+                <div class="reaction active">
+                    <i class="fas fa-heart"></i>
+                    <span>24</span>
+                </div>
+                <div class="reaction">
+                    <i class="fas fa-comment"></i>
+                    <span>6</span>
+                </div>
+                <div class="reaction">
+                    <i class="fas fa-hands-clapping"></i>
+                    <span>14</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="community-post">
+            <div class="post-header">
+                <div class="post-avatar">HT</div>
+                <div>
+                    <div class="post-author">HealingTogether23</div>
+                    <div class="post-time">5 hours ago</div>
+                </div>
+            </div>
+            <div class="post-text">
+                Tried journaling for the first time today. Didn't expect to cry while writing, but I actually feel
+                lighter afterwards. Has anyone else experienced this?
+            </div>
+            <div class="reaction-bar">
+                <div class="reaction">
+                    <i class="fas fa-heart"></i>
+                    <span>19</span>
+                </div>
+                <div class="reaction active">
+                    <i class="fas fa-comment"></i>
+                    <span>3</span>
+                </div>
+                <div class="reaction">
+                    <i class="fas fa-hands-clapping"></i>
+                    <span>12</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="footer">
+
+    </div>
+
+    <!-- Breathing Exercise Modal -->
+    <div class="modal" id="breathingModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-title">Breathing Exercise</div>
+            <div class="breathing-instruction">
+                Breathe in slowly through your nose for 4 seconds, hold for 4 seconds, then exhale through your mouth
+                for 6 seconds.
+            </div>
+            <div class="breathing-circle" id="breathCircle">
+                Breathe In
+            </div>
+            <button class="primary-button">
+                <i class="fas fa-play"></i>
+                Start Exercise
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Simple modal toggle functions
+        function openModal() {
+            document.getElementById('breathingModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('breathingModal').style.display = 'none';
+        }
+
+        // Breathing animation would go here in a real implementation
+        // This is just a placeholder
+        const breathCircle = document.getElementById('breathCircle');
+        let breathing = false;
+
+        breathCircle.addEventListener('click', () => {
+            if (!breathing) {
+                breathing = true;
+                breathCircle.textContent = "Hold";
+                breathCircle.style.transform = "scale(1.2)";
+                breathCircle.style.backgroundColor = "#E8F0FA";
+
+                setTimeout(() => {
+                    breathCircle.textContent = "Breathe Out";
+                    breathCircle.style.transform = "scale(1)";
+                    breathCircle.style.backgroundColor = "#D4E3F7";
+
+                    setTimeout(() => {
+                        breathCircle.textContent = "Breathe In";
+                        breathCircle.style.backgroundColor = "#E8F0FA";
+                        breathing = false;
+                    }, 6000);
+                }, 4000);
+            }
+        });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.header-status').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+    </script>
+</body>
+
+</html>

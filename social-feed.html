@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PTSD Support App - Social Feed</title>
+    <link rel="stylesheet" href="root.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9FAFC;
+            padding: 1rem;
+            color: var(--dark);
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding-bottom: 5rem;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .create-post-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border: 1px solid #E5E9F0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background-color: var(--light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Content Tabs */
+        .content-tabs {
+            display: flex;
+            border-bottom: 1px solid #E5E9F0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--primary);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        /* Posts Feed */
+        .posts-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .post-user {
+            flex-grow: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.1rem;
+        }
+
+        .post-menu {
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+        }
+
+        .post-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .post-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .post-media {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .post-video {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+            background-color: #000;
+        }
+
+        .video-container {
+            position: relative;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .post-reactions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reaction-count {
+            font-size: 0.85rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reaction-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .reaction-button {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.5rem;
+        }
+
+        .reaction-button.active {
+            color: var(--primary);
+        }
+
+        .reaction-button.liked {
+            color: #FF6B6B;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--light);
+            border-top: 1px solid #E5E9F0;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 420px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.7rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item-center {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transform: translateY(-15px);
+            box-shadow: 0 4px 12px rgba(90, 143, 212, 0.3);
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .nav-item-center i {
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-status">
+
+    </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">Inspiration Feed</h1>
+            <button class="create-post-button">
+                <i class="fas fa-plus"></i>
+                Create
+            </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search posts...">
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="content-tabs">
+            <div class="tab active">For You</div>
+            <div class="tab">Motivational</div>
+            <div class="tab">Mindfulness</div>
+            <div class="tab">Stories</div>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-feed">
+            <!-- Video Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">HT</div>
+                    <div class="post-user">
+                        <div class="post-username">HealingTogether</div>
+                        <div class="post-time">2 hours ago</div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">Morning Affirmations for Healing</h3>
+                    <p class="post-text">
+                        Start your day with these powerful affirmations. Repeat after me and set positive intentions for
+                        your healing journey.
+                    </p>
+                    <div class="post-media">
+                        <div class="video-container">
+                            <div class="video-placeholder">
+                                <i class="fas fa-play" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-reactions">
+                    <div class="reaction-count">
+                        <i class="fas fa-heart" style="color: #FF6B6B;"></i>
+                        <span>142 likes</span>
+                    </div>
+                    <div class="reaction-buttons">
+                        <button class="reaction-button liked">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">JM</div>
+                    <div class="post-user">
+                        <div class="post-username">JoyfulMoments</div>
+                        <div class="post-time">5 hours ago</div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">Finding Beauty in Small Things</h3>
+                    <p class="post-text">
+                        Today I noticed these flowers on my walk. Taking time to appreciate small moments like this
+                        helps ground me when I'm feeling anxious. What small beauty have you noticed today?
+                    </p>
+                    <div class="post-media">
+                        <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Flowers" class="post-image">
+                    </div>
+                </div>
+                <div class="post-reactions">
+                    <div class="reaction-count">
+                        <i class="fas fa-heart" style="color: #FF6B6B;"></i>
+                        <span>89 likes</span>
+                    </div>
+                    <div class="reaction-buttons">
+                        <button class="reaction-button">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="reaction-button active">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">AS</div>
+                    <div class="post-user">
+                        <div class="post-username">AnonymousSurvivor</div>
+                        <div class="post-time">1 day ago</div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">Today I Did Something Brave</h3>
+                    <p class="post-text">
+                        After months of avoiding it, I went to the place where my trauma happened. I was terrified, but
+                        I did it with my therapist's support. I cried the whole time, but I also felt a tiny bit of
+                        power come back to me. Healing isn't linear, but today felt like progress.
+                    </p>
+                    <p class="post-text">
+                        To anyone else facing their fears today - I see you and I'm proud of you.
+                    </p>
+                </div>
+                <div class="post-reactions">
+                    <div class="reaction-count">
+                        <i class="fas fa-hands-clapping" style="color: var(--primary);"></i>
+                        <span>214 supports</span>
+                    </div>
+                    <div class="reaction-buttons">
+                        <button class="reaction-button">
+                            <i class="fas fa-hands-clapping"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motivational Video Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">MH</div>
+                    <div class="post-user">
+                        <div class="post-username">MindfulHealing</div>
+                        <div class="post-time">2 days ago</div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">5 Minute Grounding Exercise</h3>
+                    <p class="post-text">
+                        When you're feeling overwhelmed, try this quick grounding technique. Perfect for when you need
+                        to recenter during a difficult moment.
+                    </p>
+                    <div class="post-media">
+                        <div class="video-container">
+                            <div class="video-placeholder">
+                                <i class="fas fa-play" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-reactions">
+                    <div class="reaction-count">
+                        <i class="fas fa-heart" style="color: #FF6B6B;"></i>
+                        <span>327 likes</span>
+                    </div>
+                    <div class="reaction-buttons">
+                        <button class="reaction-button">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="reaction-button">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="journals.html" class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>Journal</span>
+        </a>
+        <a href="social-feed.html" class="nav-item-center">
+            <i class="fas fa-play"></i>
+        </a>
+        <a href="communities.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>Community</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // Toggle reaction buttons
+        document.querySelectorAll('.reaction-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const icon = this.querySelector('i');
+
+                if (icon.classList.contains('fa-heart')) {
+                    this.classList.toggle('liked');
+                    // Update like count (in a real app)
+                } else if (icon.classList.contains('fa-comment')) {
+                    this.classList.toggle('active');
+                    // Focus comment input (in a real app)
+                } else if (icon.classList.contains('fa-hands-clapping')) {
+                    this.classList.toggle('active');
+                    // Update support count (in a real app)
+                }
+            });
+        });
+
+        // Switch between tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelector('.tab.active').classList.remove('active');
+                this.classList.add('active');
+                // In a real app, you would load different content here
+            });
+        });
+
+        // Load header and footer
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.header-status').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading header:', error));
+    </script>
+</body>
+
+</html>
